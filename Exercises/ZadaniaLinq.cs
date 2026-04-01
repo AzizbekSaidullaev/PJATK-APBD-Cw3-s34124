@@ -273,6 +273,10 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie15_ProwadzacyILiczbaPrzedmiotow()
     {
+        return DaneUczelni.Prowadzacy.GroupJoin(DaneUczelni.Przedmioty,
+            pr => pr.Id,
+            p => p.ProwadzacyId,
+            (pr, p) => $"{pr.Imie} {pr.Nazwisko}: {p.Count()}");
         throw Niezaimplementowano(nameof(Zadanie15_ProwadzacyILiczbaPrzedmiotow));
     }
 
@@ -290,6 +294,12 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie16_NajwyzszaOcenaKazdegoStudenta()
     {
+        return DaneUczelni.Studenci.Join(DaneUczelni.Zapisy,
+            s=> s.Id,
+            z => z.StudentId,
+            (s, z) => new { z, s }).Where(j => j.z.OcenaKoncowa !=null).GroupBy(
+            j => new {j.s.Imie, j.s.Nazwisko}).
+            Select(g => $"{g.Key.Imie} {g.Key.Nazwisko}: {g.Max(i => i.z.OcenaKoncowa)} ");
         throw Niezaimplementowano(nameof(Zadanie16_NajwyzszaOcenaKazdegoStudenta));
     }
 
@@ -308,6 +318,7 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Wyzwanie01_StudenciZWiecejNizJednymAktywnymPrzedmiotem()
     {
+        
         throw Niezaimplementowano(nameof(Wyzwanie01_StudenciZWiecejNizJednymAktywnymPrzedmiotem));
     }
 
